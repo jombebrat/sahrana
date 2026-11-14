@@ -1,5 +1,5 @@
 // Service worker: обавештења и рад без интернета.
-const KES = "parastosi-v1";
+const KES = "parastosi-v2";
 
 self.addEventListener("install", () => self.skipWaiting());
 
