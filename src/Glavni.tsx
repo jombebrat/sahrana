@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState, type JSX } from "react";
 import {
   danasUParizu,
   danUNedelji,
@@ -46,6 +46,33 @@ export const IkonaTelefon = () => (
     <path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z" />
   </svg>
 );
+
+const TABOVI: [Tab, string, JSX.Element][] = [
+  [
+    "predstoji",
+    "Предстоји",
+    <>
+      <rect x="3.5" y="5" width="17" height="15.5" rx="4" />
+      <path d="M3.5 10h17M8 3v3.5M16 3v3.5" />
+    </>,
+  ],
+  [
+    "svi",
+    "Сви",
+    <>
+      <path d="M8.5 6.5h11M8.5 12h11M8.5 17.5h11" />
+      <path d="M4.5 6.5h.01M4.5 12h.01M4.5 17.5h.01" strokeWidth="2.6" />
+    </>,
+  ],
+  [
+    "linkovi",
+    "Линкови",
+    <>
+      <path d="M10 14a4.5 4.5 0 0 0 6.4 0l3-3a4.5 4.5 0 0 0-6.4-6.4l-1.2 1.2" />
+      <path d="M14 10a4.5 4.5 0 0 0-6.4 0l-3 3a4.5 4.5 0 0 0 6.4 6.4l1.2-1.2" />
+    </>,
+  ],
+];
 
 function useDanas(): string {
   const [danas, setDanas] = useState(() => danasUParizu());
@@ -160,8 +187,8 @@ export default function Glavni() {
             {danUNedelji(danas)}, {dugDatum(danas)}
           </p>
         </div>
-        <button className="ikona-dugme" aria-label="Подешавања" onClick={() => setSloj({ tip: "podesavanja" })}>
-          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden="true">
+        <button className="krug staklo" aria-label="Подешавања" onClick={() => setSloj({ tip: "podesavanja" })}>
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
             <path d="M4 7h10M18 7h2M4 17h2M10 17h10" />
             <circle cx="16" cy="7" r="2" />
             <circle cx="8" cy="17" r="2" />
@@ -196,25 +223,23 @@ export default function Glavni() {
         )}
       </main>
 
-      {tab !== "linkovi" && (
-        <button className="novi-unos" onClick={() => setSloj({ tip: "forma", id: null })}>
-          <span aria-hidden="true">+</span> Нови унос
+      <div className="dno">
+        <nav className="tabovi staklo" aria-label="Главни мени">
+          {TABOVI.map(([t, naziv, ikona]) => (
+            <button key={t} className={tab === t ? "aktivan" : ""} aria-current={tab === t ? "page" : undefined} onClick={() => setTab(t)}>
+              <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                {ikona}
+              </svg>
+              {naziv}
+            </button>
+          ))}
+        </nav>
+        <button className="plus staklo" aria-label="Нови унос" onClick={() => setSloj({ tip: "forma", id: null })}>
+          <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" aria-hidden="true">
+            <path d="M12 5v14M5 12h14" />
+          </svg>
         </button>
-      )}
-
-      <nav className="dno" aria-label="Главни мени">
-        {(
-          [
-            ["predstoji", "Предстоји"],
-            ["svi", "Сви"],
-            ["linkovi", "Линкови"],
-          ] as [Tab, string][]
-        ).map(([t, naziv]) => (
-          <button key={t} className={tab === t ? "aktivan" : ""} aria-current={tab === t ? "page" : undefined} onClick={() => setTab(t)}>
-            {naziv}
-          </button>
-        ))}
-      </nav>
+      </div>
 
       {sloj?.tip === "detalj" && podaci && (
         <Detalj
