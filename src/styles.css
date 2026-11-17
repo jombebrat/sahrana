@@ -1077,3 +1077,179 @@ label.stikla {
   letter-spacing: -0.02em;
   margin-bottom: 6px;
 }
+
+/* ================================================================
+   Рачунар и таблет у хоризонтали: бочни мени, шири садржај,
+   прозори на средини екрана. Телефон остаје непромењен.
+   ================================================================ */
+@media (min-width: 900px) {
+  :root {
+    --bocna: 232px;
+    --sirina: 1240px;
+  }
+
+  .app {
+    max-width: var(--sirina);
+    padding: 0 40px 56px calc(var(--bocna) + 72px);
+  }
+
+  /* мени са стране уместо доње траке */
+  .dno {
+    top: 0;
+    bottom: 0;
+    left: max(0px, calc((100vw - var(--sirina)) / 2));
+    right: auto;
+    width: calc(var(--bocna) + 40px);
+    max-width: none;
+    margin: 0;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    gap: 14px;
+    padding: 96px 0 32px 40px;
+  }
+
+  .tabovi {
+    flex: none;
+    height: auto;
+    flex-direction: column;
+    gap: 2px;
+    padding: 8px;
+    border-radius: 26px;
+  }
+
+  .tabovi button {
+    flex: none;
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 12px;
+    height: 48px;
+    padding: 0 16px;
+    border-radius: 18px;
+    font-size: 16px;
+  }
+
+  .tabovi button:not(.aktivan):hover {
+    background: var(--ispuna);
+  }
+
+  .plus {
+    order: -1;
+    width: 100%;
+    height: 52px;
+    border-radius: 26px;
+    grid-auto-flow: column;
+    gap: 8px;
+    justify-content: center;
+    background: var(--akcent);
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 16px;
+    backdrop-filter: none;
+  }
+
+  .plus::after {
+    content: "Нови унос";
+  }
+
+  .plus svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .zaglavlje {
+    padding: 32px 0 10px;
+  }
+
+  .zaglavlje h1 {
+    font-size: 40px;
+  }
+
+  section > h2 {
+    padding: 28px 4px 12px;
+  }
+
+  /* предстојеће у две колоне */
+  main:has(> section) {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 28px;
+    align-items: start;
+  }
+
+  main:has(> section) > :not(section) {
+    grid-column: 1 / -1;
+  }
+
+  .traka {
+    width: 100%;
+    margin: 10px 0 0;
+  }
+
+  section .forma + .traka {
+    width: 100%;
+    margin: 12px 0 0;
+  }
+
+  .lista {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .red,
+  button:not(:disabled),
+  a {
+    cursor: pointer;
+  }
+
+  .red:hover {
+    background: var(--ispuna);
+  }
+
+  /* прозор на средини уместо листа одоздо */
+  .sloj {
+    inset: 5vh 0;
+    height: auto;
+    max-height: 90vh;
+    width: min(680px, calc(100vw - 80px));
+    max-width: none;
+    margin: auto;
+    border-radius: 30px;
+    box-shadow: 0 0 0 100vmax var(--zamracenje), 0 30px 80px rgba(0, 0, 0, 0.35);
+    animation: otvaranje 0.22s cubic-bezier(0.32, 0.72, 0, 1);
+  }
+
+  .sloj-zaglavlje {
+    padding-top: 20px;
+  }
+
+  .sloj-telo {
+    padding: 6px 28px 36px;
+  }
+
+  .ulaz,
+  .prijava {
+    max-width: 540px;
+    padding-top: 9vh;
+  }
+
+  @keyframes otvaranje {
+    from {
+      opacity: 0;
+      transform: scale(0.96);
+    }
+  }
+}
+
+@media (min-width: 900px) and (max-width: 1099px) {
+  :root {
+    --bocna: 200px;
+  }
+  .app {
+    padding-left: calc(var(--bocna) + 64px);
+    padding-right: 28px;
+  }
+  main:has(> section) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
